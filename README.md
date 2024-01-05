@@ -1,13 +1,17 @@
 # NSIcon
 
 <p align="center">
-<img src="https://github.com/Stv-X/NSIcon/blob/main/Sources/NSIcon/Resources/NSIconFramework.png" 
-alt="GenericApplicationIcon" width="128"/>
+    <img src="https://github.com/Stv-X/NSIcon/blob/main/Sources/NSIcon/Resources/NSIconFramework.png" 
+    alt="GenericApplicationIcon" width="144"/>
+</p>
+<p align="center">
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStv-X%2FNSICon%2Fbadge%3Ftype%3Dswift-versions">
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStv-X%2FNSICon%2Fbadge%3Ftype%3Dplatforms">
 </p>
 
 NSIcon provides a easy-to-use Mac app icon view for SwiftUI programming, reducing the need for manually storing additional resources by utilizing high-definition assets from the system's native resources.
 
-## Usage
+## Overview
 
 ### NSIcon
 Using `NSIcon` is as simple as the built-in `Image` view in SwiftUI.
@@ -23,7 +27,7 @@ If the corresponding icon cannot be provided, NSIcon displays the GenericApplica
 
 <p align="center">
 <img src="https://github.com/Stv-X/NSIcon/blob/main/Sources/NSIcon/Resources/GenericAppIcon.png" 
-alt="GenericApplicationIcon" width="256"/>
+alt="GenericApplicationIcon" width="128"/>
 </p>
 
 ### NSAsyncIcon
