@@ -15,25 +15,17 @@ extension Image {
 
 extension CGImage {
     func containsTransparentPixels() async -> Bool {
-        let width = self.width
-        let height = self.height
-
         guard let imageData = self.dataProvider?.data,
-              let data = CFDataGetBytePtr(imageData) else {
-            return false
-        }
+              let data = CFDataGetBytePtr(imageData) else { return false }
 
+        let totalPixels = self.width * self.height
         let bytesPerPixel = 4
-        _ = bytesPerPixel * width
+        let alphaOffset = 3
 
-        for y in 0..<height {
-            for x in 0..<width {
-                let pixelIndex = (y * width + x) * bytesPerPixel
-                let alpha = data[pixelIndex + 3]
-
-                if alpha == 0 {
-                    return true
-                }
+        for pixelIndex in stride(from: 0, to: totalPixels * bytesPerPixel, by: bytesPerPixel) {
+            let alpha = data[pixelIndex + alphaOffset]
+            if alpha == 0 {
+                return true
             }
         }
         return false

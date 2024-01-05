@@ -5,14 +5,14 @@ public struct NSAsyncIcon: View {
     var country: String
     var appBundleIdentifier: String
     var addMask: Bool
-    
+
     public init(_ appName: String, addMask: Bool = true) {
         self.appName = appName
         self.country = ""
         self.appBundleIdentifier = ""
         self.addMask = addMask
     }
-    
+
     public init(_ appName: String, country: String, addMask: Bool = true) {
         self.appName = appName
         self.country = country
@@ -29,7 +29,7 @@ public struct NSAsyncIcon: View {
 
     @State private var appIconUrl: URL?
     @State private var isMacApp = true
-    
+
     public var body: some View {
         AsyncImage(url: appIconUrl) { image in
             Group {
@@ -98,15 +98,18 @@ public struct NSAsyncIcon: View {
 
     private func lookup(using components: URLComponents) async -> URL? {
         let url = components.url!
-        let data = try! await URLSession.shared.data(from: url).0
-        if let json = try! JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-           let results = json["results"] as? [[String: Any]],
-           let appIconUrl = results.first?["artworkUrl512"] as? String,
-           let url = URL(string: appIconUrl.replacing("512x512bb", with: "1024x1024bb")) {
-            return url
-        } else {
-            return nil
+        do {
+            let data = try await URLSession.shared.data(from: url).0
+            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+               let results = json["results"] as? [[String: Any]],
+               let appIconUrl = results.first?["artworkUrl512"] as? String {
+                let url = URL(string: appIconUrl.replacing("512x512bb", with: "1024x1024bb"))
+                return url
+            }
+        } catch {
+            print(error.localizedDescription)
         }
+        return nil
     }
 
     private func loadCGImage(url: URL) async -> CGImage? {
