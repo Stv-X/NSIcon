@@ -36,7 +36,7 @@ public struct NSAsyncIcon: View {
                 if addMask && !isMacApp {
                     image
                         .resizable()
-                        .mask(Image("AppIconMask").resizable())
+                        .mask(Image(packageResource: "AppIconMask", ofType: "svg").resizable())
                         .aspectRatio(contentMode: .fit)
                 } else {
                     image
@@ -59,7 +59,7 @@ public struct NSAsyncIcon: View {
         }
         .overlay {
             if addMask && !isMacApp {
-                Image("AppIconMaskBorder").resizable()
+                Image(packageResource: "AppIconMaskBorder", ofType: "svg").resizable()
             }
         }
         .task {
