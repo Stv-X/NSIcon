@@ -1,5 +1,4 @@
 import SwiftUI
-import AppKit
 
 public struct NSIcon: View {
     var appName: String
@@ -45,7 +44,7 @@ public struct NSIcon: View {
         var id: String
         if appBundleIdentifier.isEmpty {
             do {
-                try await id = getId()
+                try await id = getBundleId()
             } catch {
                 return nil
             }
@@ -64,7 +63,7 @@ public struct NSIcon: View {
         return image
     }
 
-    private func getId() async throws -> String {
+    private func getBundleId() async throws -> String {
         let task = Process()
         let outputPipe = Pipe()
         let errorPipe = Pipe()
@@ -86,18 +85,5 @@ public struct NSIcon: View {
             let output = String(decoding: outputData, as: UTF8.self).replacing("\n", with: "")
             return output
         }
-    }
-}
-
-extension NSImage: @unchecked Sendable {}
-
-extension Image {
-    init(packageResource name: String, ofType type: String) {
-        guard let path = Bundle.module.path(forResource: name, ofType: type),
-              let image = NSImage(contentsOfFile: path) else {
-            self.init(name)
-            return
-        }
-        self.init(nsImage: image)
     }
 }
