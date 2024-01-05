@@ -15,6 +15,11 @@ NSIcon(bundleIdentifier: "com.apple.safari") // You can also access app icon thr
 
 When the corresponding icon cannot be provided, NSIcon displays the GenericApplicationIcon that comes with macOS by default.
 
+<p align="center">
+<img src="https://github.com/Stv-X/NSIcon/blob/main/Sources/NSIcon/Resources/GenericAppIcon.png" 
+alt="GenericApplicationIcon" width="256"/>
+</p>
+
 
 ## Installation
 
