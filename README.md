@@ -31,17 +31,22 @@ alt="GenericApplicationIcon" width="256"/>
 
 ```swift
 NSAsyncIcon("Pages")
-NSAsyncIcon(bundleIdentifier: "com.apple.iwork.Pages")
+NSAsyncIcon(bundleIdentifier: "com.apple.iwork.pages")
 ```
 
-
-When using `appName` as an initialization parameter, there's a high probability of obtaining icon from an iOS app, presented in a opaque square shape. Therefore, consider whether to add a rounded rectangle mask to it with the mask material sourced from apps.apple.com.. The default is `true`.
+When using `appName` as an initialization parameter, you can set your preferences for iOS app or macOS app to decide the results you receive. The default is `.macOS`. 
 
 ```swift
-NSAsyncIcon("Pages", addMask: false)
+NSAsyncIcon("Pages", for: .iOS)
 ```
 
-> Note: The iOS app icons appear slightly larger compared to Mac app icons, as determined by Apple's Human Interface Guidelines. This framework does not intend to provide a solution for this; therefore, please handle it according to your specific use case as needed.
+iOS app icons and a few of macOS app icons present in a opaque square shape. Therefore, consider whether to add a rounded rectangle mask to it. The default is `false`.
+
+```swift
+NSAsyncIcon("Pages", for: .iOS, addMask: true)
+```
+
+> Note: The iOS app icons appear slightly larger than Mac app icons, as determined by Apple's [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/app-icons). This framework does not intend to undermine these rules. Please handle it according to your specific use case as needed.
 
 Sometimes, you may want to access certain apps that are only available in specific countries or regions' App Store. You can easily achieve this by inputting a country code.
 

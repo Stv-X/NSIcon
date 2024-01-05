@@ -2,42 +2,60 @@ import SwiftUI
 
 public struct NSAsyncIcon: View {
     var appName: String
+    var platform: AppPlatform
     var country: String
-    var appBundleIdentifier: String
     var addMask: Bool
+    var appBundleIdentifier: String
 
-    public init(_ appName: String, addMask: Bool = true) {
+    public init(
+        _ appName: String,
+        for platform: AppPlatform = .macOS,
+        country: String = "",
+        addMask: Bool = false
+    ) {
         self.appName = appName
-        self.country = ""
-        self.appBundleIdentifier = ""
-        self.addMask = addMask
-    }
-
-    public init(_ appName: String, country: String, addMask: Bool = true) {
-        self.appName = appName
+        self.platform = platform
         self.country = country
-        self.appBundleIdentifier = ""
         self.addMask = addMask
+        self.appBundleIdentifier = ""
     }
 
-    public init(bundleIdentifier: String, addMask: Bool = true) {
+    public init(
+        bundleIdentifier: String,
+        for platform: AppPlatform = .macOS,
+        addMask: Bool = false
+    ) {
         self.appName = ""
+        self.platform = platform
         self.country = ""
-        self.appBundleIdentifier = bundleIdentifier
         self.addMask = addMask
+        self.appBundleIdentifier = bundleIdentifier
     }
 
     @State private var appIconUrl: URL?
-    @State private var isMacApp = true
+    @State private var containsTransparentPixel = true
 
     public var body: some View {
         AsyncImage(url: appIconUrl) { image in
             Group {
-                if addMask && !isMacApp {
-                    image
-                        .resizable()
-                        .mask(Image(packageResource: "AppIconMask", ofType: "svg").resizable())
-                        .aspectRatio(contentMode: .fit)
+                if addMask && !containsTransparentPixel {
+                    switch platform {
+                    case .macOS:
+                        GeometryReader { geometry in
+                            let shadowRadius = min(geometry.size.width, geometry.size.height) * (10/1024)
+                            image
+                                .resizable()
+                                .mask(Image(packageResource: "MacAppIconMask", ofType: "png").resizable())
+                                .aspectRatio(contentMode: .fit)
+                                .scaleEffect(824/1024)
+                                .shadow(color: .black.opacity(0.3), radius: shadowRadius, y: shadowRadius)
+                        }
+                    case .iOS:
+                        image
+                            .resizable()
+                            .mask(Image(packageResource: "AppIconMask", ofType: "svg").resizable())
+                            .aspectRatio(contentMode: .fit)
+                    }
                 } else {
                     image
                         .resizable()
@@ -48,7 +66,7 @@ public struct NSAsyncIcon: View {
                 if addMask {
                     Task {
                         guard let image = await loadCGImage(url: appIconUrl!) else { return }
-                        isMacApp = await image.containsTransparentPixels()
+                        containsTransparentPixel = await image.containsTransparentPixels()
                     }
                 }
             }
@@ -58,7 +76,7 @@ public struct NSAsyncIcon: View {
                 .aspectRatio(contentMode: .fit)
         }
         .overlay {
-            if addMask && !isMacApp {
+            if addMask && !containsTransparentPixel && platform == .iOS {
                 Image(packageResource: "AppIconMaskBorder", ofType: "svg").resizable()
             }
         }
@@ -78,10 +96,14 @@ public struct NSAsyncIcon: View {
     private func lookupAppIconUrlByName(countryCode: String = "") async -> URL? {
         let endPoint = "https://itunes.apple.com/search"
         var components = URLComponents(string: endPoint)!
+        let software = switch platform {
+        case .iOS: "software"
+        case .macOS: "macSoftware"
+        }
         components.queryItems = [
             URLQueryItem(name: "term", value: appName),
             URLQueryItem(name: "country", value: countryCode),
-            URLQueryItem(name: "entity", value: "software"),
+            URLQueryItem(name: "entity", value: software),
             URLQueryItem(name: "limit", value: "1")
         ]
         return await lookup(using: components)
@@ -126,4 +148,8 @@ public struct NSAsyncIcon: View {
             return nil
         }
     }
+}
+
+public enum AppPlatform {
+    case iOS, macOS
 }
