@@ -1,6 +1,9 @@
 # NSIcon
 
-![logo](https://github.com/Stv-X/NSIcon/blob/main/Sources/NSIcon/Resources/NSIconFramework.png)
+<p align="center">
+<img src="https://github.com/Stv-X/NSIcon/blob/main/Sources/NSIcon/Resources/NSIconFramework.png" 
+alt="GenericApplicationIcon" width="128"/>
+</p>
 
 NSIcon provides a easy-to-use Mac app icon view for SwiftUI programming, reducing the need for manually storing additional resources by utilizing high-definition assets from the system's native resources.
 
