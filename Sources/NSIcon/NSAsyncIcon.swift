@@ -125,7 +125,7 @@ public struct NSAsyncIcon: View {
             let data = try await URLSession.shared.data(from: url).0
             guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                let results = json["results"] as? [[String: Any]],
-               let appIconUrl = results.first?["artworkUrl512"] as? String 
+               let appIconUrl = results.first?["artworkUrl512"] as? String
             else { return nil }
             let resultUrl = URL(string: appIconUrl.replacing("512x512bb", with: "1024x1024bb"))
             return resultUrl
@@ -136,7 +136,7 @@ public struct NSAsyncIcon: View {
         do {
             let imageData = try await URLSession.shared.data(from: url).0
             guard let imageSource = CGImageSourceCreateWithData(imageData as CFData, nil),
-                  let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) 
+                  let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
             else { return nil }
             return cgImage
         } catch { return nil }
