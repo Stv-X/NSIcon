@@ -97,10 +97,18 @@ public struct NSAsyncIcon: Icon {
     private func lookupAppIconUrlByName(countryCode: String = "") async -> URL? {
         let endPoint = "https://itunes.apple.com/search"
         var components = URLComponents(string: endPoint)!
+#if swift(>=5.9)
         let software = switch platform {
         case .iOS: "software"
         case .macOS: "macSoftware"
         }
+#else
+        let software: String
+        switch platform {
+        case .iOS: software = "software"
+        case .macOS: software = "macSoftware"
+        }
+#endif
         components.queryItems = [
             URLQueryItem(name: "term", value: appName),
             URLQueryItem(name: "country", value: countryCode),
