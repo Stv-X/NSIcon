@@ -45,7 +45,7 @@ public struct NSAsyncIcon: View {
                             let shadowRadius = min(geometry.size.width, geometry.size.height) * (10/1024)
                             image
                                 .resizable()
-                                .mask(Image(packageResource: "MacAppIconMask", ofType: "png").resizable())
+                                .mask(Image(packageResource: "MacAppIconMask", ofType: "svg").resizable())
                                 .aspectRatio(contentMode: .fit)
                                 .scaleEffect(824/1024)
                                 .shadow(color: .black.opacity(0.3), radius: shadowRadius, y: shadowRadius)
