@@ -45,7 +45,15 @@ public struct NSIcon: Icon {
         let id = appBundleIdentifier.isEmpty ? await getBundleId() : appBundleIdentifier
 
         guard let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: id) else { return nil }
-        let appFile = appURL.path().replacing("%20", with: " ")
+
+        var appFile: String
+        if #available(macOS 13.0, *) {
+            appFile = appURL.path(percentEncoded: false)
+        } else {
+            // Deprecated
+            appFile = appURL.path
+        }
+
         let icon = NSWorkspace.shared.icon(forFile: appFile)
         return icon
     }

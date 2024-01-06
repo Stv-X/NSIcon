@@ -138,7 +138,7 @@ public struct NSAsyncIcon: Icon {
                let results = json["results"] as? [[String: Any]],
                let appIconUrl = results.first?["artworkUrl512"] as? String
             else { return nil }
-            let resultUrl = URL(string: appIconUrl.replacing("512x512bb", with: "1024x1024bb"))
+            let resultUrl = URL(string: appIconUrl.replacingOccurrences(of: "512x512bb", with: "1024x1024bb"))
             return resultUrl
         } catch { return nil }
     }
