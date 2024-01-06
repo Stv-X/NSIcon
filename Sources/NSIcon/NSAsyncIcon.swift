@@ -123,31 +123,23 @@ public struct NSAsyncIcon: View {
         let url = components.url!
         do {
             let data = try await URLSession.shared.data(from: url).0
-            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+            guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                let results = json["results"] as? [[String: Any]],
-               let appIconUrl = results.first?["artworkUrl512"] as? String {
-                let url = URL(string: appIconUrl.replacing("512x512bb", with: "1024x1024bb"))
-                return url
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-        return nil
+               let appIconUrl = results.first?["artworkUrl512"] as? String 
+            else { return nil }
+            let resultUrl = URL(string: appIconUrl.replacing("512x512bb", with: "1024x1024bb"))
+            return resultUrl
+        } catch { return nil }
     }
 
     private func loadCGImage(url: URL) async -> CGImage? {
         do {
             let imageData = try await URLSession.shared.data(from: url).0
             guard let imageSource = CGImageSourceCreateWithData(imageData as CFData, nil),
-                  let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
-                return nil
-            }
-
+                  let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) 
+            else { return nil }
             return cgImage
-        } catch {
-            print("Error fetching image: \(error)")
-            return nil
-        }
+        } catch { return nil }
     }
 }
 
