@@ -31,3 +31,14 @@ extension CGImage {
         return false
     }
 }
+
+struct IconPlaceholderStyleKey: EnvironmentKey {
+    static let defaultValue: NSIconPlaceholderStyle = .default
+}
+
+extension EnvironmentValues {
+    var placeholderStyle: NSIconPlaceholderStyle {
+        get { self[IconPlaceholderStyleKey.self] }
+        set { self[IconPlaceholderStyleKey.self] = newValue }
+    }
+}

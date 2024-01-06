@@ -1,11 +1,11 @@
 import SwiftUI
 
-public struct NSAsyncIcon: View {
-    var appName: String
+public struct NSAsyncIcon: Icon {
+    public var appName: String
+    public var appBundleIdentifier: String
     var platform: AppPlatform
     var country: String
     var addMask: Bool
-    var appBundleIdentifier: String
 
     public init(
         _ appName: String,
@@ -32,6 +32,7 @@ public struct NSAsyncIcon: View {
         self.appBundleIdentifier = bundleIdentifier
     }
 
+    @Environment(\.placeholderStyle) var placeholderStyle: NSIconPlaceholderStyle
     @State private var appIconUrl: URL?
     @State private var containsTransparentPixel = true
 
@@ -71,8 +72,7 @@ public struct NSAsyncIcon: View {
                 }
             }
         } placeholder: {
-            let genericAppIconImage = NSWorkspace.shared.icon(for: .applicationBundle)
-            Image(nsImage: genericAppIconImage)
+            Image(nsImage: placeholderStyle.iconImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }

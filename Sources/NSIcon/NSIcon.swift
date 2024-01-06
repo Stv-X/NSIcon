@@ -1,10 +1,8 @@
 import SwiftUI
 
-public struct NSIcon: View {
-    var appName: String
-    var appBundleIdentifier: String
-
-    @State private var iconImage: NSImage?
+public struct NSIcon: Icon {
+    public var appName: String
+    public var appBundleIdentifier: String
 
     public init() {
         self.appName = ""
@@ -21,6 +19,9 @@ public struct NSIcon: View {
         self.appBundleIdentifier = bundleIdentifier
     }
 
+    @Environment(\.placeholderStyle) var placeholderStyle: NSIconPlaceholderStyle
+    @State private var iconImage: NSImage?
+
     public var body: some View {
         Group {
             if let icon = iconImage {
@@ -28,8 +29,7 @@ public struct NSIcon: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
             } else {
-                let genericAppIconImage = NSWorkspace.shared.icon(for: .applicationBundle)
-                Image(nsImage: genericAppIconImage)
+                Image(nsImage: placeholderStyle.iconImage)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
             }
@@ -42,49 +42,18 @@ public struct NSIcon: View {
             return NSImage(named: NSImage.applicationIconName)
         }
 
-        var id: String
-        if appBundleIdentifier.isEmpty {
-            do {
-                try await id = getBundleId()
-            } catch {
-                return nil
-            }
-        } else {
-            id = appBundleIdentifier
-        }
-        let iconRect = NSRect(x: 0, y: 0, width: 1024, height: 1024)
+        let id = appBundleIdentifier.isEmpty ? await getBundleId() : appBundleIdentifier
 
         guard let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: id) else { return nil }
         let appFile = appURL.path().replacing("%20", with: " ")
         let icon = NSWorkspace.shared.icon(forFile: appFile)
-
-        guard let rep = icon.bestRepresentation(for: iconRect, context: nil, hints: nil) else { return nil }
-        let image = NSImage(size: rep.size)
-        image.addRepresentation(rep)
-        return image
+        return icon
     }
 
-    private func getBundleId() async throws -> String {
-        let task = Process()
-        let outputPipe = Pipe()
-        let errorPipe = Pipe()
-        let error = NSError(domain: "NSIcon", code: 1, userInfo: [
-                              NSLocalizedDescriptionKey: "Error when getting app id for \(appName)"
-                            ])
-
-        task.standardOutput = outputPipe
-        task.standardError = errorPipe
-
-        task.launchPath = "/usr/bin/osascript"
-        task.arguments = ["-e", "id of app \"\(appName)\""]
-
-        try task.run()
-
-        let errorData = try errorPipe.fileHandleForReading.readToEnd()
-        if errorData?.isEmpty == false { throw error } else {
-            guard let outputData = try outputPipe.fileHandleForReading.readToEnd() else { throw error }
-            let output = String(decoding: outputData, as: UTF8.self).replacing("\n", with: "")
-            return output
-        }
+    private func getBundleId() async -> String {
+        let source = "id of app \"\(appName)\""
+        let script = NSAppleScript(source: source)!
+        var error: NSDictionary?
+        return script.executeAndReturnError(&error).stringValue ?? ""
     }
 }
