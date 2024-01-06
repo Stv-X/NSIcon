@@ -18,9 +18,14 @@ Using `NSIcon` is as simple as the built-in `Image` view in SwiftUI.
 You can get access to almost any app icon installed on your Mac.
 
 ```swift
-NSIcon() // Use the parameterless initializer if you want to access the icon of your app itself.
-NSIcon("Safari") // Get Safari app icon.
-NSIcon(bundleIdentifier: "com.apple.safari") // You can also access app icon through the App's Bundle Identifier.
+// Use the parameterless initializer if you want to access the icon of your app itself.
+NSIcon()
+
+// Get an app icon view by name.
+NSIcon("Safari")
+
+// You can also access app icon by its bundle identifier.
+NSIcon(bundleIdentifier: "com.apple.safari")
 ```
 
 If the corresponding icon cannot be provided, NSIcon displays the GenericApplicationIcon that comes with macOS by default.
@@ -29,6 +34,19 @@ If the corresponding icon cannot be provided, NSIcon displays the GenericApplica
 <img src="https://github.com/Stv-X/NSIcon/assets/30586070/de3a0c5c-8517-4887-9d65-04335d53c812" 
 alt="GenericApplicationIcon" width="128"/>
 </p>
+
+You can use `iconPlaceholderStyle` modifier to get a different appearance of the placeholder.
+
+```swift
+NSIcon("unknown")
+    .iconPlaceholderStyle(.classic)
+```
+
+<p align="center">
+<img src="https://github.com/Stv-X/NSIcon/assets/30586070/56374d34-cd6b-48fc-9b1f-c005be6dea3d" 
+alt="GenericApplicationIconClassic" width="128"/>
+</p>
+
 
 ### NSAsyncIcon
 `NSAsyncIcon` behaves similarly to `NSIcon`, it obtains app icon from the App Store by accessing [iTunes Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI).
@@ -50,6 +68,8 @@ iOS app icons and a few of macOS app icons present in a opaque square shape. The
 NSAsyncIcon("Pages", for: .iOS, addMask: true)
 ```
 
+![NSAsyncIconPreview](https://github.com/Stv-X/NSIcon/assets/30586070/a24cb2b5-e54e-4e28-a1e5-798c5d03cc30)
+
 > Note: The iOS app icons appear slightly larger than Mac app icons, as determined by Apple's [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/app-icons). This framework does not intend to undermine these rules. Please handle it according to your specific use case as needed.
 
 Sometimes, you may want to access certain apps that are only available in specific countries or regions' App Store. You can easily achieve this by inputting a country code.
@@ -57,6 +77,8 @@ Sometimes, you may want to access certain apps that are only available in specif
 ```swift
 NSAsyncIcon("原神", country: "CN")
 ```
+
+![NSAsyncIconCountryPreview](https://github.com/Stv-X/NSIcon/assets/30586070/b88c6e18-8907-4be5-b855-0584c1d8eaf2)
 
 ## Installation
 
