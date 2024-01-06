@@ -50,7 +50,10 @@ public struct NSAsyncIcon: Icon {
                                 .aspectRatio(contentMode: .fit)
                                 .scaleEffect(824/1024)
                                 .shadow(color: .black.opacity(0.3), radius: shadowRadius, y: shadowRadius)
+                                .frame(width: geometry.frame(in: .global).width,
+                                       height: geometry.frame(in: .global).height)
                         }
+                        .aspectRatio(1, contentMode: .fit)
                     case .iOS:
                         image
                             .resizable()
