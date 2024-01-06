@@ -71,7 +71,8 @@ public struct NSAsyncIcon: View {
                 }
             }
         } placeholder: {
-            Image(packageResource: "GenericAppIcon", ofType: "png")
+            let genericAppIconImage = NSWorkspace.shared.icon(for: .applicationBundle)
+            Image(nsImage: genericAppIconImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }
