@@ -46,7 +46,7 @@ public struct NSAsyncIcon: Icon {
                             let shadowRadius = min(geometry.size.width, geometry.size.height) * (10/1024)
                             image
                                 .resizable()
-                                .mask(Image(packageResource: "MacAppIconMask", ofType: "svg").resizable())
+                                .mask(Image("MacAppIconMask", bundle: .module).resizable())
                                 .aspectRatio(contentMode: .fit)
                                 .scaleEffect(824/1024)
                                 .shadow(color: .black.opacity(0.3), radius: shadowRadius, y: shadowRadius)
@@ -57,7 +57,7 @@ public struct NSAsyncIcon: Icon {
                     case .iOS:
                         image
                             .resizable()
-                            .mask(Image(packageResource: "AppIconMask", ofType: "svg").resizable())
+                            .mask(Image("AppIconMask", bundle: .module).resizable())
                             .aspectRatio(contentMode: .fit)
                     }
                 } else {
@@ -81,7 +81,7 @@ public struct NSAsyncIcon: Icon {
         }
         .overlay {
             if addMask && !containsTransparentPixel && platform == .iOS {
-                Image(packageResource: "AppIconMaskBorder", ofType: "svg").resizable()
+                Image("AppIconMaskBorder", bundle: .module).resizable()
             }
         }
         .task {

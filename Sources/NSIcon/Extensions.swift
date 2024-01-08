@@ -2,17 +2,6 @@ import SwiftUI
 
 extension NSImage: @unchecked Sendable {}
 
-extension Image {
-    init(packageResource name: String, ofType type: String) {
-        guard let path = Bundle.module.path(forResource: name, ofType: type),
-              let image = NSImage(contentsOfFile: path) else {
-            self.init(name)
-            return
-        }
-        self.init(nsImage: image)
-    }
-}
-
 extension CGImage {
     func containsTransparentPixels() async -> Bool {
         guard let imageData = self.dataProvider?.data,
