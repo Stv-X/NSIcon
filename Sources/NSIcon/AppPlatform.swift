@@ -23,19 +23,19 @@ extension AppPlatform {
     var mask: some View {
         switch self {
         case .iOS:
-            AnyView {
+            return AnyView(
                 Image("AppIconMask", bundle: .module)
                     .resizable()
-            }
+            )
         case .macOS:
-            AnyView {
+            return AnyView(
                 Image("MacAppIconMask", bundle: .module)
                     .resizable()
-            }
+            )
         case .watchOS:
-            AnyView { Circle() }
+            return AnyView(Circle())
         case .visionOS:
-            AnyView { Circle() }
+            return AnyView(Circle())
         }
     }
 }
