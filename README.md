@@ -14,11 +14,13 @@ NSIcon provides a easy-to-use Mac app icon view for SwiftUI programming, reducin
 ## Overview
 
 ### NSIcon
+#### Available: macOS
+
 Using `NSIcon` is as simple as the built-in `Image` view in SwiftUI.
 You can get access to almost any app icon installed on your Mac.
 
 ```swift
-// Use the parameterless initializer if you want to access the icon of your app itself.
+// Use `init()` if you want to access the icon of your app itself.
 NSIcon()
 
 // Get an app icon view by name.
@@ -30,11 +32,6 @@ NSIcon(bundleIdentifier: "com.apple.safari")
 
 If the corresponding icon cannot be provided, NSIcon displays the GenericApplicationIcon that comes with macOS by default.
 
-<p align="center">
-<img src="https://github.com/Stv-X/NSIcon/assets/30586070/de3a0c5c-8517-4887-9d65-04335d53c812" 
-alt="GenericApplicationIcon" width="128"/>
-</p>
-
 You can use `iconPlaceholderStyle` modifier to get a different appearance of the placeholder.
 
 ```swift
@@ -42,13 +39,40 @@ NSIcon("unknown")
     .iconPlaceholderStyle(.classic)
 ```
 
-<p align="center">
-<img src="https://github.com/Stv-X/NSIcon/assets/30586070/56374d34-cd6b-48fc-9b1f-c005be6dea3d" 
-alt="GenericApplicationIconClassic" width="128"/>
-</p>
+![GenericAppIconStyles](https://github.com/Stv-X/NSIcon/assets/30586070/3a151568-b0b5-433b-9662-d3dca5f26290)
 
+
+### UIIcon
+#### Available: iOS, iPadOS, Mac Catalyst, watchOS, visionOS
+
+Considering the app sandbox environment on these platforms, the icon file assets of other apps are inaccessible, `UIIcon` only provides the ability to access icon of the app itself.
+
+Unlike the behavior of `NSIcon`, `UIIcon` adds mask to the icon by default. Use parameter `addMask: Bool` to control.
+
+On different platforms, the appearance of masks are different.
+
+| Platform |                             iOS                              | iPadOS                                                       |                         Mac Catalyst                         | watchOS | visionOS |
+| :------: | :----------------------------------------------------------: | ------------------------------------------------------------ | :----------------------------------------------------------: | :-----: | :------: |
+|   Mask   | [AppIconMask](https://github.com/Stv-X/NSIcon/tree/main/Sources/NSIcon/Media.xcassets/AppIconMask.imageset) | [AppIconMask](https://github.com/Stv-X/NSIcon/tree/main/Sources/NSIcon/Media.xcassets/AppIconMask.imageset) | [MacAppIconMask](https://github.com/Stv-X/NSIcon/tree/main/Sources/NSIcon/Media.xcassets/MacAppIconMask.imageset) | Circle  |  Circle  |
+
+```swift
+UIIcon()
+UIIcon(addMask: false)
+```
+
+In visionOS, the app icon consists of three different layers. Use `init()` to render a merged version by default.
+You can also use `init(_ layer: AppIconlayer)` or `init(_ layers: [AppIconlayer])` to select which parts of the icon to display.
+
+```swift
+UIIcon(.back)
+UIIcon([.middle, .front])
+```
+
+> Note: `UIIcon` does not support `iconPlaceholderStyle` modifier.
 
 ### NSAsyncIcon
+#### Available: macOS
+
 `NSAsyncIcon` behaves similarly to `NSIcon`, it obtains app icon from the App Store by accessing [iTunes Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI).
 
 ```swift
@@ -56,13 +80,15 @@ NSAsyncIcon("Pages")
 NSAsyncIcon(bundleIdentifier: "com.apple.iwork.pages")
 ```
 
-When using `appName` as an initialization parameter, you can set your preferences for iOS app or macOS app to decide the results you receive. The default is `.macOS`. 
+When using `appName` as an initialization parameter, you can set your preferences for iOS, macOS, watchOS or visionOS app to decide the results you receive. The default is `.macOS`. 
 
 ```swift
 NSAsyncIcon("Pages", for: .iOS)
 ```
 
 iOS app icons and a few of macOS app icons present in a opaque square shape. Therefore, consider whether to add a rounded rectangle mask to it. The default is `false`.
+
+> Note: `NSAsyncIcon` will check if this icon contains transparent pixels. If so, the mask will not be added to the view.
 
 ```swift
 NSAsyncIcon("Pages", for: .iOS, addMask: true)
@@ -79,6 +105,22 @@ NSAsyncIcon("原神", country: "CN")
 ```
 
 ![NSAsyncIconCountryPreview](https://github.com/Stv-X/NSIcon/assets/30586070/b88c6e18-8907-4be5-b855-0584c1d8eaf2)
+
+### UIAsyncIcon
+#### Available: iOS, iPadOS, Mac Catalyst, watchOS, visionOS
+
+`UIAsyncIcon` works almost exactly the same as `NSAsyncIcon`, check the differences below:
+1. Add a mask to the icon by default
+2. `for platform: AppPlatform` parameter defaults to `.iOS`
+3. Support custom placeholder
+4. The `placeholderStyle` modifier is not supported
+
+`UIAsyncIcon` uses a `ProgressView()` as the default placeholder, to create a custom placeholder, just add a custom view to the `placeholder` closure.
+
+```swift
+UIAsyncIcon("Pages") { CustomPlaceholder() }
+```
+
 
 ## Installation
 
