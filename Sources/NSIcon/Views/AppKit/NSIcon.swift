@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if os(macOS)
 public struct NSIcon: Icon {
     public var appName: String
     public var appBundleIdentifier: String
@@ -26,25 +27,23 @@ public struct NSIcon: Icon {
         Group {
             if let icon = iconImage {
                 Image(nsImage: icon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .iconDefault()
             } else {
                 Image(nsImage: placeholderStyle.iconImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .iconDefault()
             }
         }
         .task { iconImage = await loadImage() }
     }
 
     private func loadImage() async -> NSImage? {
-        guard !(appName.isEmpty && appBundleIdentifier.isEmpty) else {
-            return NSImage(named: NSImage.applicationIconName)
-        }
+        guard !(appName.isEmpty && appBundleIdentifier.isEmpty)
+        else { return NSImage.appIcon }
 
         let id = appBundleIdentifier.isEmpty ? await getBundleId() : appBundleIdentifier
 
-        guard let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: id) else { return nil }
+        guard let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: id)
+        else { return nil }
 
         var appFile: String
         if #available(macOS 13.0, *) {
@@ -65,3 +64,4 @@ public struct NSIcon: Icon {
         return script.executeAndReturnError(&error).stringValue ?? ""
     }
 }
+#endif

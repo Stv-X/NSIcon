@@ -1,5 +1,6 @@
 import SwiftUI
 
+#if os(macOS)
 public struct IconPlaceholderStyle: ViewModifier {
     let style: NSIconPlaceholderStyle
 
@@ -30,3 +31,15 @@ extension NSIconPlaceholderStyle {
         }
     }
 }
+
+struct IconPlaceholderStyleKey: EnvironmentKey {
+    static let defaultValue: NSIconPlaceholderStyle = .default
+}
+
+extension EnvironmentValues {
+    var placeholderStyle: NSIconPlaceholderStyle {
+        get { self[IconPlaceholderStyleKey.self] }
+        set { self[IconPlaceholderStyleKey.self] = newValue }
+    }
+}
+#endif

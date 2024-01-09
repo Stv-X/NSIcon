@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "NSIcon",
     platforms: [
-        .macOS(.v12)
+        .macOS(.v12), .iOS(.v15), .watchOS(.v9)
     ],
     products: [
         .library(
@@ -15,8 +15,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "NSIcon",
-            resources: [.process("Resources")]),
+            name: "NSIcon"),
         .testTarget(
             name: "NSIconTests",
             dependencies: ["NSIcon"])
