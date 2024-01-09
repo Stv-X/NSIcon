@@ -61,7 +61,7 @@ public struct UIAsyncIcon<P: View>: Icon {
                 if addMask {
                     Task {
                         guard let url = appIconUrl,
-                              let image = await url.loadCGImage()
+                              let image = await CGImage.create(with: url)
                         else { return }
                         containsTransparentPixel = await image.containsTransparentPixels()
                     }
@@ -74,52 +74,15 @@ public struct UIAsyncIcon<P: View>: Icon {
                 }
             }
         } placeholder: { placeholder }
-            .task {
-                if appName.isEmpty {
-                    appIconUrl = await lookupAppIconUrlByBundleId()
-                } else {
-                    if country.isEmpty {
-                        appIconUrl = await lookupAppIconUrlByName()
-                    } else {
-                        appIconUrl = await lookupAppIconUrlByName(countryCode: country)
-                    }
-                }
-            }
+            .task { await loadIcon() }
     }
-
-    private func lookupAppIconUrlByName(countryCode: String = "") async -> URL? {
-        let endPoint = "https://itunes.apple.com/search"
-
-        var components = URLComponents(string: endPoint)!
-        components.queryItems = [
-            URLQueryItem(name: "term", value: appName),
-            URLQueryItem(name: "country", value: countryCode),
-            URLQueryItem(name: "entity", value: platform.queryEntity),
-            URLQueryItem(name: "limit", value: "1")
-        ]
-        return await lookup(using: components)
-    }
-
-    private func lookupAppIconUrlByBundleId() async -> URL? {
-        let endPoint = "https://itunes.apple.com/lookup"
-        var components = URLComponents(string: endPoint)!
-        components.queryItems = [
-            URLQueryItem(name: "bundleId", value: appBundleIdentifier)
-        ]
-        return await lookup(using: components)
-    }
-
-    private func lookup(using components: URLComponents) async -> URL? {
-        let url = components.url!
-        do {
-            let data = try await URLSession.shared.data(from: url).0
-            guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-               let results = json["results"] as? [[String: Any]],
-               let appIconUrl = results.first?["artworkUrl512"] as? String
-            else { return nil }
-            let resultUrl = URL(string: appIconUrl.replacingOccurrences(of: "512x512bb", with: "1024x1024bb"))
-            return resultUrl
-        } catch { return nil }
+    
+    private func loadIcon() async {
+        let vm = AsyncIconVM(appName: appName,
+                             appBundleIdentifier: appBundleIdentifier,
+                             platform: platform,
+                             country: country)
+        appIconUrl = await vm.loadImage()
     }
 }
 #endif

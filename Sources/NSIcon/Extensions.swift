@@ -65,9 +65,9 @@ extension CGImage {
     }
 }
 
-extension URL {
-    func loadCGImage() async -> CGImage? {
-        guard let fetchedImage = CGImageSourceCreateWithURL(self as CFURL, nil),
+extension CGImage {
+    static func create(with url: URL) async -> CGImage? {
+        guard let fetchedImage = CGImageSourceCreateWithURL(url as CFURL, nil),
               let cgImage = CGImageSourceCreateImageAtIndex(fetchedImage, 0, nil)
         else { return nil }
         return cgImage
