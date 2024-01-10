@@ -15,19 +15,16 @@ public enum NSIconPlaceholderStyle {
 
 extension NSIconPlaceholderStyle {
     var iconImage: NSImage {
+        let defaultIconImage = NSWorkspace.shared.icon(for: .applicationBundle)
         let coreTypesBundle = Bundle(path: "/System/Library/CoreServices/CoreTypes.bundle")!
-        var classicIconPath: String
-        if #available(macOS 13.0, *) {
-            classicIconPath = coreTypesBundle.url(forResource: "GenericApplicationIcon", withExtension: "icns")!.path()
-        } else {
-            // Deprecated
-            classicIconPath = coreTypesBundle.url(forResource: "GenericApplicationIcon", withExtension: "icns")!.path
-        }
+        let classicIconPath = coreTypesBundle.url(forResource: "GenericApplicationIcon", withExtension: "icns")!.path()
+        let classicIconImage = NSImage(contentsOfFile: classicIconPath) ?? NSImage()
+
         switch self {
         case .default:
-            return NSWorkspace.shared.icon(for: .applicationBundle)
+            return defaultIconImage
         case .classic:
-            return NSImage(contentsOfFile: classicIconPath)!
+            return classicIconImage
         }
     }
 }

@@ -14,7 +14,7 @@ NSIcon provides a easy-to-use Mac app icon view for SwiftUI programming, reducin
 ## Overview
 
 ### NSIcon
-#### Available: macOS
+#### Available: macOS 13.0+
 
 Using `NSIcon` is as simple as the built-in `Image` view in SwiftUI.
 You can get access to almost any app icon installed on your Mac.
@@ -43,7 +43,7 @@ NSIcon("unknown")
 
 
 ### UIIcon
-#### Available: iOS, iPadOS, Mac Catalyst, watchOS, visionOS
+#### Available: iOS 16.0+, iPadOS 16.0+, Mac Catalyst 16.0+, watchOS 9.0+, visionOS 1.0+
 
 Considering the app sandbox environment on these platforms, the icon file assets of other apps are inaccessible, `UIIcon` only provides the ability to access icon of the app itself.
 
@@ -71,7 +71,7 @@ UIIcon([.middle, .front])
 > Note: `UIIcon` does not support `iconPlaceholderStyle` modifier.
 
 ### NSAsyncIcon
-#### Available: macOS
+#### Available: macOS 13.0+
 
 `NSAsyncIcon` behaves similarly to `NSIcon`, it obtains app icon from the App Store by accessing [iTunes Search API](https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI).
 
@@ -107,7 +107,7 @@ NSAsyncIcon("原神", country: "CN")
 ![NSAsyncIconCountryPreview](https://github.com/Stv-X/NSIcon/assets/30586070/b88c6e18-8907-4be5-b855-0584c1d8eaf2)
 
 ### UIAsyncIcon
-#### Available: iOS, iPadOS, Mac Catalyst, watchOS, visionOS
+#### Available: iOS 16.0+, iPadOS 16.0+, Mac Catalyst 16.0+, watchOS 9.0+, visionOS 1.0+
 
 `UIAsyncIcon` works almost exactly the same as `NSAsyncIcon`, check the differences below:
 1. Add a mask to the icon by default

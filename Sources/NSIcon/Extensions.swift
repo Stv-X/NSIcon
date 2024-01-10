@@ -47,7 +47,7 @@ extension Image {
 }
 
 extension CGImage {
-    func containsTransparentPixels() async -> Bool {
+    func containsTransparentPixel() async -> Bool {
         guard let imageData = self.dataProvider?.data,
               let data = CFDataGetBytePtr(imageData) else { return false }
 
@@ -57,19 +57,8 @@ extension CGImage {
 
         for pixelIndex in stride(from: 0, to: totalPixels * bytesPerPixel, by: bytesPerPixel) {
             let alpha = data[pixelIndex + alphaOffset]
-            if alpha == 0 {
-                return true
-            }
+            if alpha == 0 { return true }
         }
         return false
-    }
-}
-
-extension CGImage {
-    static func create(with url: URL) async -> CGImage? {
-        guard let fetchedImage = CGImageSourceCreateWithURL(url as CFURL, nil),
-              let cgImage = CGImageSourceCreateImageAtIndex(fetchedImage, 0, nil)
-        else { return nil }
-        return cgImage
     }
 }

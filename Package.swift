@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "NSIcon",
     platforms: [
-        .iOS(.v15), .macOS(.v12), .watchOS(.v8)
+        .iOS(.v16), .macOS(.v13), .watchOS(.v9)
     ],
     products: [
         .library(

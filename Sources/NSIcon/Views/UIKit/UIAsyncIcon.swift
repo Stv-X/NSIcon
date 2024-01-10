@@ -57,14 +57,11 @@ public struct UIAsyncIcon<P: View>: Icon {
                         .iconDefault()
                 }
             }
-            .onAppear {
+            .task {
                 if addMask {
-                    Task {
-                        guard let url = appIconUrl,
-                              let image = await CGImage.create(with: url)
-                        else { return }
-                        containsTransparentPixel = await image.containsTransparentPixels()
-                    }
+                    let renderer = ImageRenderer(content: image)
+                    guard let icon = renderer.cgImage else { return }
+                    containsTransparentPixel = await icon.containsTransparentPixel()
                 }
             }
             .overlay {
