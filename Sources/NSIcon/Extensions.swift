@@ -23,14 +23,15 @@ extension Image {
         case .macOS:
             return AnyView(
                 GeometryReader { geometry in
-                    let shadowRadius = min(geometry.size.width, geometry.size.height) * (10/1024)
-                    let iconScale = CGFloat(824/1024)
-                    let shadowColor = Color.black.opacity(0.3)
+                    let shadowOffset = min(geometry.size.width, geometry.size.height) * (10/1024)
+                    let shadowRadius = shadowOffset / 2
+                    let iconScale: CGFloat = 824/1024
+                    let shadowColor: Color = .black.opacity(0.3)
                     self
                         .iconDefault()
                         .mask { platform.mask }
                         .scaleEffect(iconScale)
-                        .shadow(color: shadowColor, radius: shadowRadius, y: shadowRadius)
+                        .shadow(color: shadowColor, radius: shadowRadius, y: shadowOffset)
                         .frame(width: geometry.frame(in: .global).width,
                                height: geometry.frame(in: .global).height)
                 }
