@@ -5,8 +5,8 @@ public class AsyncIconVM {
     private var appBundleIdentifier: String
     private var platform: AppPlatform
     private var country: String
-    
-    init(appName: String, 
+
+    init(appName: String,
          appBundleIdentifier: String,
          platform: AppPlatform,
          country: String
@@ -28,7 +28,7 @@ public class AsyncIconVM {
             }
         }
     }
-    
+
     private func lookupAppIconUrlByName(countryCode: String = "") async -> URL? {
         let endPoint = "https://itunes.apple.com/search"
 

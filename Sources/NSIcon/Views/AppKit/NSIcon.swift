@@ -37,9 +37,9 @@ public struct NSIcon: Icon {
     }
 
     private func loadIcon() async {
-        let vm = NSIconVM(appName: appName, 
+        let model = NSIconVM(appName: appName,
                           appBundleIdentifier: appBundleIdentifier)
-        iconImage = await vm.loadImage()
+        iconImage = await model.loadImage()
     }
 }
 #endif

@@ -21,7 +21,7 @@ extension Image {
     func appIconMask(_ platform: AppPlatform) -> some View {
         switch platform {
         case .macOS:
-            return AnyView (
+            return AnyView(
                 GeometryReader { geometry in
                     let shadowRadius = min(geometry.size.width, geometry.size.height) * (10/1024)
                     let iconScale = CGFloat(824/1024)
@@ -37,7 +37,7 @@ extension Image {
                 .aspectRatio(1, contentMode: .fit)
             )
         default:
-            return AnyView (
+            return AnyView(
                 self
                     .iconDefault()
                     .mask { platform.mask }

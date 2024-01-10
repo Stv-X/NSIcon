@@ -76,13 +76,13 @@ public struct UIAsyncIcon<P: View>: Icon {
         } placeholder: { placeholder }
             .task { await loadIcon() }
     }
-    
+
     private func loadIcon() async {
-        let vm = AsyncIconVM(appName: appName,
+        let model = AsyncIconVM(appName: appName,
                              appBundleIdentifier: appBundleIdentifier,
                              platform: platform,
                              country: country)
-        appIconUrl = await vm.loadImage()
+        appIconUrl = await model.loadImage()
     }
 }
 #endif

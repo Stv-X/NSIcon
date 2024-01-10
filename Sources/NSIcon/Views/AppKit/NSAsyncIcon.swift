@@ -67,11 +67,11 @@ public struct NSAsyncIcon: Icon {
     }
 
     private func loadIcon() async {
-        let vm = AsyncIconVM(appName: appName,
+        let model = AsyncIconVM(appName: appName,
                              appBundleIdentifier: appBundleIdentifier,
                              platform: platform,
                              country: country)
-        appIconUrl = await vm.loadImage()
+        appIconUrl = await model.loadImage()
     }
 }
 #endif
