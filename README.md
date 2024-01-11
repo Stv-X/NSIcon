@@ -1,13 +1,11 @@
-# NSIcon
+
 
 <p align="center">
     <img src="https://github.com/Stv-X/NSIcon/assets/30586070/ff00cd60-d6df-4b1d-b9ab-a1069a2ccdf3" 
     alt="NSIcon Framework" width="144"/>
 </p>
-<p align="center">
-    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStv-X%2FNSICon%2Fbadge%3Ftype%3Dswift-versions">
-    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStv-X%2FNSICon%2Fbadge%3Ftype%3Dplatforms">
-</p>
+
+# NSIcon [![GitHub License](https://img.shields.io/github/license/stv-x/nsicon)](https://raw.githubusercontent.com/Stv-X/NSIcon/master/LICENSE) [![GitHub Release](https://img.shields.io/github/v/release/stv-x/nsicon)](https://github.com/Stv-X/NSIcon/releases/latest) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStv-X%2FNSIcon%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/Stv-X/NSIcon) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStv-X%2FNSIcon%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/Stv-X/NSIcon)
 
 NSIcon provides a easy-to-use Mac app icon view for SwiftUI programming, reducing the need for manually storing additional resources by utilizing high-definition assets from the system's native resources.
 
